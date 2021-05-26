@@ -36,7 +36,7 @@ output_dir = "../../output/faster_rcnn_fpn/faster_rcnn_fpn_training_mot_17_split
 if not osp.exists(output_dir):
     os.makedirs(output_dir)
 
-# Image.open(osp.join(data_root_dir, 'train/MOT17-02/img1/000001.jpg'))
+Image.open(osp.join(data_root_dir, 'train/MOT17-02/img1/000001.jpg'))
 
 # %% [markdown]
 # ## Defining the Dataset
@@ -66,7 +66,6 @@ if not osp.exists(output_dir):
 # %%
 from mot_data import MOTObjDetect
 
-
 # %%
 import matplotlib.pyplot as plt
 import transforms as T
@@ -94,7 +93,7 @@ def plot(img, boxes):
 
 dataset = MOTObjDetect(osp.join(data_root_dir, 'train'), split_seqs=['MOT17-09'])
 print(len(dataset))
-img, target = dataset[-5]
+img, target = dataset[-10]
 img, target = T.ToTensor()(img, target)
 plot(img, target['boxes'])
 

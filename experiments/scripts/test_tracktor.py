@@ -78,12 +78,12 @@ def main(module_name, name, seed, obj_detect_models, reid_models,
 
     # object detection
     _log.info("Initializing object detector(s).")
+    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
     obj_detects = []
     for obj_detect_model in obj_detect_models:
         obj_detect = FRCNN_FPN(num_classes=2)
-        obj_detect.load_state_dict(torch.load(obj_detect_model,
-                                map_location=lambda storage, loc: storage))
+        obj_detect.load_state_dict(torch.load(obj_detect_model, map_location=device))
         obj_detects.append(obj_detect)
 
         obj_detect.eval()
@@ -99,8 +99,7 @@ def main(module_name, name, seed, obj_detect_models, reid_models,
         reid_cfg = yaml.safe_load(open(reid_cfg))
 
         reid_network = ReIDNetwork_resnet50(pretrained=False, **reid_cfg['model_args'])
-        reid_network.load_state_dict(torch.load(reid_model,
-                                    map_location=lambda storage, loc: storage))
+        reid_network.load_state_dict(torch.load(reid_model,map_location=device))
         reid_network.eval()
         if torch.cuda.is_available():
             reid_network.cuda()
